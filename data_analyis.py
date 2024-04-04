@@ -37,9 +37,34 @@ def analyze_data(data):
         plt.ylabel('Count')
         plt.show()
 
+# Applying one hot encoding
+
+def one_hot_encode(data, column):
+    """
+    Perform one-hot encoding on a categorical column of a DataFrame.
+
+    Parameters:
+        data (pandas.DataFrame): The DataFrame containing the categorical column.
+        column (str): The name of the categorical column to be encoded.
+
+    Returns:
+        pandas.DataFrame: The DataFrame with the categorical column replaced by one-hot encoded columns.
+    """
+    # Perform one-hot encoding
+    one_hot_encoded = pd.get_dummies(data[column], prefix=column)
+    
+    # Drop the original categorical column
+    data_encoded = data.drop(columns=[column])
+    
+    # Concatenate the encoded columns with the original dataframe
+    data_encoded = pd.concat([data_encoded, one_hot_encoded], axis=1)
+    
+    return data_encoded
+
+
 def main():
-    file_path = input("Enter the path to the CSV file: ")
-    data = load_data(file_path)
+    data = load_data('dlops_activity/DryBeanDataset/Dry_Bean_Dataset.xlsx')
+    data = one_hot_encode(data, 'Class')
     analyze_data(data)
 
 if __name__ == "__main__":
