@@ -37,29 +37,25 @@ def analyze_data(data):
         plt.ylabel('Count')
         plt.show()
 
-# Applying one hot encoding
+# Applying missing
 
-def one_hot_encode(data, column):
+def list_missing_values(data):
     """
-    Perform one-hot encoding on a categorical column of a DataFrame.
+    List out missing values in a DataFrame.
 
     Parameters:
-        data (pandas.DataFrame): The DataFrame containing the categorical column.
-        column (str): The name of the categorical column to be encoded.
+        data (pandas.DataFrame): The DataFrame to check for missing values.
 
     Returns:
-        pandas.DataFrame: The DataFrame with the categorical column replaced by one-hot encoded columns.
+        pandas.Series: A Series containing the count of missing values for each column with missing values.
     """
-    # Perform one-hot encoding
-    one_hot_encoded = pd.get_dummies(data[column], prefix=column)
-    
-    # Drop the original categorical column
-    data_encoded = data.drop(columns=[column])
-    
-    # Concatenate the encoded columns with the original dataframe
-    data_encoded = pd.concat([data_encoded, one_hot_encoded], axis=1)
-    
-    return data_encoded
+    # Count missing values in each column
+    missing_values = data.isnull().sum()
+
+    # List out columns with missing values
+    columns_with_missing_values = missing_values[missing_values > 0]
+
+    return columns_with_missing_values
 
 
 def main():
