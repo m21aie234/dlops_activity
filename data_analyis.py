@@ -37,9 +37,30 @@ def analyze_data(data):
         plt.ylabel('Count')
         plt.show()
 
+# Applying missing
+
+def list_missing_values(data):
+    """
+    List out missing values in a DataFrame.
+
+    Parameters:
+        data (pandas.DataFrame): The DataFrame to check for missing values.
+
+    Returns:
+        pandas.Series: A Series containing the count of missing values for each column with missing values.
+    """
+    # Count missing values in each column
+    missing_values = data.isnull().sum()
+
+    # List out columns with missing values
+    columns_with_missing_values = missing_values[missing_values > 0]
+
+    return columns_with_missing_values
+
+
 def main():
-    file_path = input("Enter the path to the CSV file: ")
-    data = load_data(file_path)
+    data = load_data('dlops_activity/DryBeanDataset/Dry_Bean_Dataset.xlsx')
+    data = one_hot_encode(data, 'Class')
     analyze_data(data)
 
 if __name__ == "__main__":
